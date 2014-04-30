@@ -1,7 +1,9 @@
 #include "stdafx.h"
-#include "Object.h"
 #include <exception>
 #include <iostream>
+#include "Object.h"
+#include "Test.h"
+#include "GC.h"
 using namespace lang;
 class TestFail : std::exception
 {
@@ -10,11 +12,9 @@ public:
 	TestFail(const char* what) : std::exception(what)
 	{}
 };
-#define TESTASSERT(expr) std::cout<<#expr;_ASSERT_EXPR(expr,#expr)
-class Test
-{
-public:
-	Test()
+#define TESTASSERT(expr) std::cout<<"Test:"<<#expr<<std::endl;_ASSERT_EXPR(expr,#expr)
+
+Test::Test()
 	{
 		try
 		{
@@ -28,6 +28,8 @@ public:
 			delete two;
 			TESTASSERT(one->gcinfo.next == three);
 			TESTASSERT(three->gcinfo.prev == one);
+			std::cout << "GC Collect..." << std::endl;
+			gc->collect();
 			std::cout << "OK!" << std::endl;
 		}
 		catch (TestFail)
@@ -39,4 +41,3 @@ public:
 			throw TestFail("throw exception");
 		}
 	}
-};

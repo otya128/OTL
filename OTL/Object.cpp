@@ -14,6 +14,7 @@ namespace lang
 	void* vfptrs[ObjectTypeLength];
 	void Init()
 	{
+		gc = new GC();
 		vfptrs[0] = new Object(true);
 		vfptrs[1] = new VarObject(true);
 		vfptrs[2] = new Int(true);
@@ -34,12 +35,12 @@ namespace lang
 	void VarObject::vfptr_dmmy(){}
 	Object::Object()
 	{
-		if (latest)
+		if (gc->latest)
 		{
-			this->gcinfo.prev = latest;
+			this->gcinfo.prev = gc->latest;
 			this->gcinfo.prev->gcinfo.next = this;
 		}
-		latest = this;
+		gc->latest = this;
 		SETVFPTR(this, Object_vfptr[objecttype]);
 	}
 
@@ -48,7 +49,7 @@ namespace lang
 		//•t‚¯‘Ö‚¦‚é
 		if (this->gcinfo.prev)this->gcinfo.prev->gcinfo.next = this->gcinfo.next;
 		if(this->gcinfo.next)this->gcinfo.next->gcinfo.prev = this->gcinfo.prev;
-		if (latest == this)latest = this->gcinfo.prev;
+		if (gc->latest == this)gc->latest = this->gcinfo.prev;
 	}
 	std::string Object::ToString()
 	{

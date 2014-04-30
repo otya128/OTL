@@ -1,9 +1,10 @@
 #include "GC.h"
-
+#include <iostream>
+#include "Object.h"
 
 namespace lang
 {
-	Object *latest;
+	GC *gc;
 	GC::GC()
 	{
 	}
@@ -14,6 +15,13 @@ namespace lang
 	}
 	void GC::collect()
 	{
-
+		Object *target = this->latest;
+		count++;
+		while (target)
+		{
+			std::cout << target->ToString() << target << std::endl;
+			target->gcinfo.count = count;
+			target = target->gcinfo.prev;
+		}
 	}
 }

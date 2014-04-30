@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Object.h"
 //class Test{ public:Test(); };
-#include "Test.cpp"
+#include "Test.h"
 using namespace lang;
 int main(int argc, char* argv[])
 {

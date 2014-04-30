@@ -3,13 +3,15 @@
 #define __GC__H__
 namespace lang
 {
-	extern Object *latest;
 	class GC
 	{
 	public:
+		Object *latest;
+		int count;
 		GC();
 		~GC();
 		void collect();
 	};
+	extern GC *gc;
 }
 #endif
