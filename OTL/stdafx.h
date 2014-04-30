@@ -10,6 +10,11 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
+namespace lang
+{
+	class Object;
+	class VarObject;
+	class Int;
+}
 
 // TODO: プログラムに必要な追加ヘッダーをここで参照してください。

@@ -38,6 +38,7 @@ namespace lang
 	class Object
 	{
 	public:
+		inline Object(bool){}
 		static const ObjectType objecttype = _Object;
 		GCInfo gcinfo;
 		virtual void vfptr_dmmy();
@@ -53,17 +54,26 @@ namespace lang
 	class VarObject
 	{
 	public:
+		inline VarObject(bool){}
 		static const ObjectType objecttype = _VarObject;
 		virtual void vfptr_dmmy();
 		VarObject();
 		virtual ~VarObject();
+		virtual std::string ToString();
+		inline ObjectType GetType()
+		{
+			return ObjectGetType(this);
+		}
 	};
 	class VarRefObject
 	{
+	public:
 		VarObject hoge;
 	};
 	class Int : public VarObject
 	{
+	public:
+		inline Int(bool){}
 		static const ObjectType objecttype = _VarInt;
 		int data;
 		Int();
