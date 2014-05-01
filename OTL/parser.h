@@ -94,10 +94,36 @@ namespace lang
 	};
 	struct token
 	{
-		std::string name;
+		token();
+		token(std::wstring& n, tokenenum t, int s, int l, int L);
+		token(wchar_t* n, tokenenum t, int s, int l, int L);
+		token(wchar_t n, tokenenum t, int s, int l, int L);
+		std::wstring name;
 		tokenenum type;
+		int start;
+		int length;
+		int line;
 		struct token* prev;
 		struct token* next;
+	};
+	enum NodeType
+	{
+		EVAL = 1,
+		OP,
+	};
+	class TreeNode
+	{
+	public:
+		NodeType Type;
+		token* Token;
+		TreeNode() = delete;
+		tokenenum GetTokenType();
+	};
+	class OPNode : public TreeNode
+	{
+	public:
+		OPNode();
+
 	};
 	class parser
 	{
