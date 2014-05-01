@@ -1,5 +1,6 @@
 #include "parser.h"
 #include <iostream>
+#include <sstream>
 
 namespace lang
 {
@@ -19,7 +20,8 @@ namespace lang
 	}
 	void parser::Parse(std::wstring& text)
 	{
-		Lexical(text);
+		firsttoken = Lexical(text);
+		auto hge = Tree(firsttoken);
 	}
 	bool util_matchw(std::wstring& text, wchar_t* match, int index = 0)
 	{
@@ -110,7 +112,14 @@ namespace lang
 					}
 					else
 					{
+						std::wstringstream ss;
+						ss << name;
+						int val;
+						ss >> val;
+						auto iNt = new Int();
+						iNt->data = val;
 						TokenAdd(tkn, new token(name, num, index, name.length(), __line__)); name.clear();
+						tkn->object = iNt;
 						stat = None;
 						continue;
 					}
@@ -151,6 +160,8 @@ namespace lang
 			std::wcout << tkk->name << std::endl;
 			tkk = tkk->next;
 		}
-		return firsttkn;
+		tkk = firsttkn->next;
+		delete firsttkn;
+		return tkk;
 	}
 }

@@ -1,6 +1,7 @@
 #ifndef __PARSER__H__
 #define __PARSER__H__
 #include <string>
+#include "Object.h"
 
 namespace lang
 {
@@ -103,34 +104,58 @@ namespace lang
 		int start;
 		int length;
 		int line;
+		ObjectBase *object;
 		struct token* prev;
 		struct token* next;
 	};
 	enum NodeType
 	{
-		EVAL = 1,
-		OP,
+		NODE_ROOT = 1,
+		NODE_EVAL,
+		NODE_OP,
+		NODE_CONSTANT
 	};
 	class TreeNode
 	{
+	protected:
+		inline TreeNode(){}
 	public:
 		NodeType Type;
 		token* Token;
-		TreeNode() = delete;
 		tokenenum GetTokenType();
 	};
+	template<int count>
 	class OPNode : public TreeNode
 	{
 	public:
-		OPNode();
-
+		TreeNode *Child[count];
+		OPNode(token *tkn);
 	};
+	class RootNode : public TreeNode
+	{
+	public:
+		TreeNode *Child;
+		RootNode();
+	};
+	template<typename object>
+	class ConstNode : public TreeNode
+	{
+	public:
+		object constant;
+		ConstNode(object val);
+	};
+	typedef OPNode<2> BinOPNode;
+	typedef OPNode<1> UnaOPNode;
 	class parser
 	{
 	public:
+		RootNode root;
+		token *firsttoken;
 		parser();
 		void Parse(std::wstring&);
 		token* Lexical(std::wstring&);
+		TreeNode* TreeEval(token *&tkn);
+		RootNode Tree(token *tkn);
 		~parser();
 	};
 }

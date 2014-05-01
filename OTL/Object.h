@@ -34,8 +34,9 @@ namespace lang
 		Object *next;
 	};
 	extern void* Object_vfptr[ObjectTypeLength][16];
+	class ObjectBase{};
 	//éQè∆å^
-	class Object
+	class Object : public ObjectBase
 	{
 	public:
 		inline Object(bool){}
@@ -51,7 +52,7 @@ namespace lang
 		}
 	};
 	//ílå^
-	class VarObject
+	class VarObject : public ObjectBase
 	{
 	public:
 		inline VarObject(bool){}
