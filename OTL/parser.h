@@ -131,6 +131,12 @@ namespace lang
 		TreeNode *Child[count];
 		OPNode(token *tkn);
 	};
+	class EvalNode : public TreeNode
+	{
+	public:
+		TreeNode *Child;
+		EvalNode();
+	};
 	class RootNode : public TreeNode
 	{
 	public:

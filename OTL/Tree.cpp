@@ -19,6 +19,10 @@ namespace lang
 	{
 		this->Type = NODE_ROOT;
 	}
+	EvalNode::EvalNode()
+	{
+		this->Type = NODE_EVAL;
+	}
 	RootNode parser::Tree(token *tkn)
 	{
 		RootNode root;
@@ -27,7 +31,8 @@ namespace lang
 			switch (tkn->type)
 			{
 				case num:
-					root.Child = TreeEval(tkn);
+					root.Child = new EvalNode();
+					((EvalNode*)root.Child)->Child = TreeEval(tkn);
 					return root;
 					break;
 			}
