@@ -1,15 +1,16 @@
 #include <memory.h>
+#include <sstream>
 #include "Object.h"
 #include "GC.h"
 #include "stack.h"
 
 namespace lang
 {
-	char* ObjectTypeString[ObjectTypeLength] = 
+	wchar_t* ObjectTypeString[ObjectTypeLength] = 
 	{
-		"Object",
-		"VarObject",
-		"VarInt",
+		L"Object",
+		L"VarObject",
+		L"VarInt",
 	};
 	void* Object_vfptr[ObjectTypeLength][16];
 	void* vfptrs[ObjectTypeLength];
@@ -31,6 +32,7 @@ namespace lang
 		//0xC0000005
 		//*vfptr = 1;
 		/*(*(size_t*)(size_t*)*(void**)&object) = 1;*/
+		thread_init();
 	}
 	void Object::vfptr_dmmy(){}
 	void VarObject::vfptr_dmmy(){}
@@ -52,13 +54,13 @@ namespace lang
 		if(this->gcinfo.next)this->gcinfo.next->gcinfo.prev = this->gcinfo.prev;
 		if (gc->latest == this)gc->latest = this->gcinfo.prev;
 	}
-	std::string Object::ToString()
+	std::wstring Object::ToString()
 	{
-		return ObjectTypeString[ObjectGetType(this)];
+		return std::wstring(ObjectTypeString[ObjectGetType(this)]);
 	}
-	std::string VarObject::ToString()
+	std::wstring VarObject::ToString()
 	{
-		return ObjectTypeString[ObjectGetType(this)];
+		return std::wstring(ObjectTypeString[ObjectGetType(this)]);
 	}
 	VarObject::VarObject()
 	{
@@ -94,6 +96,12 @@ namespace lang
 	}
 	ObjectBase* Int::operator +(ObjectBase* op1)
 	{
-		return allocate_stack_int(ToInt(op1) + this->data);
+		return alloca_int(ToInt(op1) + this->data);
+	}
+	std::wstring Int::ToString()
+	{
+		std::wstringstream wss;
+		wss << this->data;
+		return wss.str();
 	}
 }

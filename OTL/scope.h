@@ -15,7 +15,8 @@ namespace lang
 		void RefInc();
 		void RefDec();
 		ObjectBase* Run();
-		ObjectBase* Eval(TreeNode *&context, int op = 17);
+		ObjectBase* Run(TreeNode *context);
+		ObjectBase* Eval(TreeNode *context, int op = 17);
 	};
 }
 #endif

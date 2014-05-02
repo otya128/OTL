@@ -12,7 +12,7 @@ namespace lang
 #endif
 #define ObjectGetType(ptr) (ObjectType)(**GETVFPTRCAST(ptr, size_t**))
 	const int ObjectTypeLength = 3;
-	extern char* ObjectTypeString[ObjectTypeLength];
+	extern wchar_t* ObjectTypeString[ObjectTypeLength];
 	enum ObjectType
 	{
 		_Object,
@@ -42,6 +42,7 @@ namespace lang
 		{
 			return ObjectGetType(this);
 		}
+		virtual std::wstring ToString() = 0;
 	};
 	//éQè∆å^
 	class Object : public ObjectBase
@@ -53,7 +54,7 @@ namespace lang
 		virtual void vfptr_dmmy();
 		Object();
 		virtual ~Object();
-		virtual std::string ToString();
+		virtual std::wstring ToString();
 		inline ObjectType GetType()
 		{
 			return ObjectGetType(this);
@@ -70,7 +71,7 @@ namespace lang
 		virtual void vfptr_dmmy();
 		VarObject();
 		virtual ~VarObject();
-		virtual std::string ToString();
+		virtual std::wstring ToString();
 		inline ObjectType GetType()
 		{
 			return ObjectGetType(this);
@@ -91,6 +92,7 @@ namespace lang
 		int data;
 		Int();
 		virtual ~Int();
+		virtual std::wstring ToString();
 		virtual ObjectBase* operator +(ObjectBase*);
 		static inline int ToInt(ObjectBase* i)
 		{

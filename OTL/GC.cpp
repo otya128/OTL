@@ -19,7 +19,7 @@ namespace lang
 		count++;
 		while (target)
 		{
-			std::cout << target->ToString() << target << std::endl;
+			std::wcout << target->ToString() << target << std::endl;
 			target->gcinfo.count = count;
 			target = target->gcinfo.prev;
 		}

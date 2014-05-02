@@ -21,7 +21,7 @@ namespace lang
 	void parser::Parse(std::wstring& text)
 	{
 		firsttoken = Lexical(text);
-		auto hge = Tree(firsttoken);
+		this->root = Tree(firsttoken);
 	}
 	bool util_matchw(std::wstring& text, wchar_t* match, int index = 0)
 	{
