@@ -89,6 +89,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="VM.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GC.cpp" />
@@ -100,6 +101,7 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="VM.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

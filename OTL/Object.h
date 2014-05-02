@@ -87,6 +87,20 @@ namespace lang
 	{
 	public:
 		inline Int(bool){}
+		///////////////
+		//////////////w
+		/////////////ew
+		////////////new
+		/////////// new
+		//////////t new
+		/////////nt new
+		////////ent new
+		///////ment new
+		//////ement new
+		/////cement new
+		////acement new
+		///lacement new
+		//placement new
 		void Init();
 		static const ObjectType objecttype = _VarInt;
 		int data;
