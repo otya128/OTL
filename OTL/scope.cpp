@@ -1,4 +1,6 @@
 #include "scope.h"
+#include "stack.h"
+
 namespace lang
 {
 	scope::scope(TreeNode *node) :context(node)
@@ -14,7 +16,10 @@ namespace lang
 	void scope::RefDec(){ this->refcount--; if (this->refcount <= 0)delete this; }
 	ObjectBase* scope::Run()
 	{
-		return this->Run(this->context);
+		auto EBP = varstack;
+		auto E = this->Run(this->context);
+		varstack = EBP;
+		return E;
 	}
 	ObjectBase* scope::Run(TreeNode *context)
 	{
