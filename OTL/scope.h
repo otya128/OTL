@@ -12,6 +12,8 @@ namespace lang
 		TreeNode *context;
 		scope(TreeNode *node);
 		~scope();
+		void RefInc();
+		void RefDec();
 		ObjectBase* Run();
 		ObjectBase* Eval(TreeNode *&context, int op = 17);
 	};

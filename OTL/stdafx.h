@@ -12,10 +12,10 @@
 
 namespace lang
 {
+	class ObjectBase;
 	class Object;
 	class VarObject;
 	class Int;
-	class ObjectBase;
 }
 
 // TODO: プログラムに必要な追加ヘッダーをここで参照してください。

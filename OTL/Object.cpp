@@ -1,6 +1,7 @@
 #include <memory.h>
 #include "Object.h"
 #include "GC.h"
+#include "stack.h"
 
 namespace lang
 {
@@ -66,11 +67,33 @@ namespace lang
 	VarObject::~VarObject()
 	{
 	}
+	void VarObject::Init()
+	{
+		SETVFPTR(this, Object_vfptr[objecttype]);
+	}
 	Int::Int()
 	{
 		SETVFPTR(this, Object_vfptr[objecttype]);
 	}
 	Int::~Int()
 	{
+	}
+	void Int::Init()
+	{
+		SETVFPTR(this, Object_vfptr[objecttype]);
+	}
+	ObjectBase* Object::operator +(ObjectBase*)
+	{
+		//error!
+		return nullptr;
+	}
+	ObjectBase* VarObject::operator +(ObjectBase*)
+	{
+		//error!
+		return nullptr;
+	}
+	ObjectBase* Int::operator +(ObjectBase* op1)
+	{
+		return allocate_stack_int(ToInt(op1) + this->data);
 	}
 }

@@ -34,7 +34,15 @@ namespace lang
 		Object *next;
 	};
 	extern void* Object_vfptr[ObjectTypeLength][16];
-	class ObjectBase{};
+	class ObjectBase{
+	public:
+		virtual void vfptr_dmmy() = 0;
+		virtual ObjectBase* operator +(ObjectBase*) = 0;
+		inline ObjectType GetType()
+		{
+			return ObjectGetType(this);
+		}
+	};
 	//QÆŒ^
 	class Object : public ObjectBase
 	{
@@ -50,12 +58,14 @@ namespace lang
 		{
 			return ObjectGetType(this);
 		}
+		virtual ObjectBase* operator +(ObjectBase*);
 	};
 	//’lŒ^
 	class VarObject : public ObjectBase
 	{
 	public:
 		inline VarObject(bool){}
+		void Init();
 		static const ObjectType objecttype = _VarObject;
 		virtual void vfptr_dmmy();
 		VarObject();
@@ -65,6 +75,7 @@ namespace lang
 		{
 			return ObjectGetType(this);
 		}
+		virtual ObjectBase* operator +(ObjectBase*);
 	};
 	class VarRefObject
 	{
@@ -75,10 +86,17 @@ namespace lang
 	{
 	public:
 		inline Int(bool){}
+		void Init();
 		static const ObjectType objecttype = _VarInt;
 		int data;
 		Int();
 		virtual ~Int();
+		virtual ObjectBase* operator +(ObjectBase*);
+		static inline int ToInt(ObjectBase* i)
+		{
+			if (i->GetType() == _VarInt)
+				return ((Int*)i)->data;
+		}
 	};
 }
 #endif
