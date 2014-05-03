@@ -69,13 +69,16 @@ void VMView(OPCODE*& op, bool whiledo)
 						break;
 					case OP_OP_CONST:
 						std::cout << "OP_CONST:";
+						op++;
 						VMView(op, false);
 						op2 = *(ObjectBase**)op;
-						std::wcout << op2->ToString();
+						std::wcout << ',' << op2->ToString();
 						op += sizeof(ObjectBase*);
+						op--;
 						break;
 					case OP_OP_OP:
 						std::cout << "OP_OP:";
+						op++;
 						VMView(op, false);
 						VMView(op, false);
 						break;

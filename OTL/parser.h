@@ -123,35 +123,41 @@ namespace lang
 		NodeType Type;
 		token* Token;
 		tokenenum GetTokenType();
+		TreeNode *Root;
+		virtual void SetChild(TreeNode *child);
 	};
 	template<int count>
 	class OPNode : public TreeNode
 	{
 	public:
 		TreeNode *Child[count];
-		OPNode(token *tkn);
+		OPNode(token *tkn, TreeNode *r);
+		int opcount;
 	};
 	class EvalNode : public TreeNode
 	{
 	public:
 		TreeNode *Child;
-		EvalNode();
+		EvalNode(TreeNode *r);
+		virtual void SetChild(TreeNode *child);
 	};
 	class RootNode : public TreeNode
 	{
 	public:
 		TreeNode *Child;
-		RootNode();
+		RootNode(TreeNode *r);
+		virtual void SetChild(TreeNode *child);
 	};
 	template<typename object>
 	class ConstNode : public TreeNode
 	{
 	public:
 		object constant;
-		ConstNode(object val);
+		ConstNode(object val, TreeNode *r);
 	};
 	typedef OPNode<2> BinOPNode;
 	typedef OPNode<1> UnaOPNode;
+	const int DEFAULT_OP = 17;
 	class parser
 	{
 	public:
@@ -160,7 +166,7 @@ namespace lang
 		parser();
 		void Parse(std::wstring&);
 		token* Lexical(std::wstring&);
-		TreeNode* TreeEval(token *&tkn);
+		TreeNode* TreeEval(TreeNode *parent, token *&tkn, int opera = DEFAULT_OP);
 		RootNode Tree(token *tkn);
 		~parser();
 	};

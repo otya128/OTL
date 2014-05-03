@@ -12,7 +12,7 @@ namespace lang
 	{
 		return c >= L'0'&&c <= L'9';
 	}
-	parser::parser()
+	parser::parser() : root(nullptr)
 	{
 	}
 	parser::~parser()
