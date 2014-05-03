@@ -141,10 +141,10 @@ namespace lang
 				if (thisbinop >= opera)
 				{
 					opnode = new BinOPNode(tkn, parent->Root);
+					parent->Root->SetChild(opnode);
 					opnode->Child[0] = parent;
 					tkn = tkn->next;
 					opnode->Child[1] = TreeEval(opnode, tkn, thisbinop);
-					parent->Root->SetChild(opnode);
 					return val;
 				}
 				opnode = new BinOPNode(tkn, parent);

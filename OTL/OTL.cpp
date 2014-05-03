@@ -36,7 +36,7 @@ void TreeView(TreeNode *tree, int sp)
 			break;
 	}
 }
-void VMView(OPCODE*& op, bool whiledo)
+void VMView(OPCODE*& op, bool whiledo, bool lisp = false)
 {
 	do
 	{
@@ -44,46 +44,47 @@ void VMView(OPCODE*& op, bool whiledo)
 		switch (*op)
 		{
 			case OP_ADD:
-				std::cout << "ADD ";
+				std::cout << (lisp ? "( + " : "ADD ");
 				op++;
 				switch (*op)
 				{
 					case OP_CONST_CONST:
-						std::cout << "CONST_CONST:";
+						if (!lisp)std::cout << "CONST_CONST:";
 						op++;
 						op1 = *(ObjectBase**)op;
-						std::wcout << op1->ToString() << ',';
+						std::wcout << op1->ToString() << (lisp ? ' ' : ',');
 						op += sizeof(ObjectBase*);
 						op2 = *(ObjectBase**)op;
 						op += sizeof(ObjectBase*);
 						std::wcout << op2->ToString();
 						break;
 					case OP_CONST_OP:
-						std::cout << "CONST_OP:";
+						if (!lisp)std::cout << "CONST_OP:";
 						op++;
 						op1 = *(ObjectBase**)op;
-						std::wcout << op1->ToString() << ',';
+						std::wcout << op1->ToString() << (lisp ? ' ' : ',');
 						op += sizeof(ObjectBase*);
-						VMView(op, false);
-						op--;
+						VMView(op, false, lisp);
+						if (whiledo)op--;
 						break;
 					case OP_OP_CONST:
-						std::cout << "OP_CONST:";
+						if (!lisp)std::cout << "OP_CONST:";
 						op++;
-						VMView(op, false);
+						VMView(op, false, lisp);
 						op2 = *(ObjectBase**)op;
-						std::wcout << ',' << op2->ToString();
+						std::wcout << (lisp ? ' ' : ',') << op2->ToString();
 						op += sizeof(ObjectBase*);
-						op--;
+						if (whiledo)op--;
 						break;
 					case OP_OP_OP:
-						std::cout << "OP_OP:";
+						if (!lisp)std::cout << "OP_OP:";
 						op++;
-						VMView(op, false);
-						VMView(op, false);
+						VMView(op, false, lisp);
+						VMView(op, false, lisp);
 						break;
 				}
-				std::wcout << std::endl;
+				if (lisp)std::cout << ')';
+				if (whiledo)std::wcout << std::endl;
 				break;
 			case OP_END:
 				return;
@@ -96,7 +97,7 @@ int main(int argc, char* argv[])
 	Init();
 	Test test;
 	parser pars;
-	std::wstring text(L"1+1+52");
+	std::wstring text(L"1+1+52+3+4");
 	pars.Parse(text);
 	TreeView(&pars.root, 0);
 	scope scop(&pars.root);
@@ -104,7 +105,7 @@ int main(int argc, char* argv[])
 	std::wcout << "interpreter:" << ret->ToString() << std::endl;
 	VM vm;
 	vm.Compile(&pars.root);
-	VMView(vm.bytecode, true);
+	VMView(vm.bytecode, true, true);
 	vm.bytecode = vm.bytecodelist.data();
 	ret = vm.Run();
 	std::wcout << "VM:" << ret->ToString() << std::endl;

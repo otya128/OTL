@@ -39,14 +39,14 @@ namespace lang
 							op1 = *(ObjectBase**)bytecode;
 							bytecode += sizeof(ObjectBase*);
 							op2 = Run(bytecode, false);
-							bytecode--;
+							if (whiledo)bytecode--;
 							break;
 						case OP_OP_CONST:
 							bytecode++;
 							op1 = Run(bytecode, false);
 							op2 = *(ObjectBase**)bytecode;
 							bytecode += sizeof(ObjectBase*);
-							bytecode--;
+							if (whiledo)bytecode--;
 							break;
 						case OP_OP_OP:
 							op1 = Run(bytecode, false);
